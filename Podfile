@@ -10,5 +10,6 @@ target 'DummyLogin' do
   pod 'Firebase/Auth'
   pod 'GoogleSignIn'
   pod 'FBSDKLoginKit'
+  pod 'KakaoSDK'
 
 end

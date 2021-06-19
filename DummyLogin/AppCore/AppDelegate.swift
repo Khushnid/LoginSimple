@@ -3,6 +3,9 @@ import UIKit
 import Firebase
 import GoogleSignIn
 import FBSDKCoreKit
+import KakaoSDKCommon
+import KakaoSDKAuth
+import KakaoSDKUser
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -11,6 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         
+        // MARK:  For google Login
         FirebaseApp.configure()
         GIDSignIn.sharedInstance().clientID = ConstantsAPIKey.GOOGLE_KEY
         
@@ -18,6 +22,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             application,
             didFinishLaunchingWithOptions: launchOptions
         )
+        
+        // MARK:  for Kokoa login
+        KakaoSDKCommon.initSDK(appKey: ConstantsAPIKey.KOKAOTALK_KEY)
         
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
@@ -40,14 +47,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let googleDidHandle = GIDSignIn.sharedInstance().handle(url)
         
-        let facebookHandle = ApplicationDelegate.shared.application(
-            app,
-            open: url,
-            sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,
-            annotation: options[UIApplication.OpenURLOptionsKey.annotation]
-        )
+        //        let facebookHandle = ApplicationDelegate.shared.application(
+        //            app,
+        //            open: url,
+        //            sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,
+        //            annotation: options[UIApplication.OpenURLOptionsKey.annotation]
+        //        )
         
-        return googleDidHandle || facebookHandle
+        if (AuthApi.isKakaoTalkLoginUrl(url)) {
+            return AuthController.handleOpenUrl(url: url)
+        } else {
+            return googleDidHandle
+        }
+  
     }
 }
 

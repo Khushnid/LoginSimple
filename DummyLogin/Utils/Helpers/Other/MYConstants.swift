@@ -11,6 +11,7 @@ extension FontSize {
     public static let sm10: CGFloat = isIPad ? 12 : 10
     public static let sm9: CGFloat = isIPad ? 11 : 9
     public static let sm8: CGFloat = isIPad ? 10 : 8
+    public static let sm7: CGFloat = isIPad ? 9 : 7
     
     //medium range
     public static let md16: CGFloat = isIPad ? 18 : 16
