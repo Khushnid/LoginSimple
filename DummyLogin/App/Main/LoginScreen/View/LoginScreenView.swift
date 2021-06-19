@@ -19,12 +19,12 @@ class LoginScreenView : GenericScrollView {
     let signupButton = MYButton(title: "SIGN UP", cornerRadius: 8, backgroundColor: UIColor(hex: "#1C8ADBFF")!)
     let googleButton = MYButton()
     let facebookButton = MYButton()
-    let appleButton = MYButton()
+    let kokoaButton = MYButton()
    
     var signUpHandler: (() -> Void)?
     var googleHandler: (() -> Void)?
     var facebookHandler: (() -> Void)?
-    var appleHandler: (() -> Void)?
+    var kokoaHandler: (() -> Void)?
     
     let datePicker = UIDatePicker()
 }
@@ -38,7 +38,7 @@ extension LoginScreenView {
         signupButton.addTarget(self, action: #selector(signUpAction), for: .primaryActionTriggered)
         googleButton.addTarget(self, action: #selector(googleAction), for: .primaryActionTriggered)
         facebookButton.addTarget(self, action: #selector(facebookAction), for: .primaryActionTriggered)
-        appleButton.addTarget(self, action: #selector(appleAction), for: .primaryActionTriggered)
+        kokoaButton.addTarget(self, action: #selector(appleAction), for: .primaryActionTriggered)
     }
     
     override func setupSubviews() {
@@ -79,11 +79,11 @@ extension LoginScreenView {
         
         googleButton.withImage(imageName: "google")
         facebookButton.withImage(imageName: "facebook")
-        appleButton.withImage(imageName: "apple")
+        kokoaButton.withImage(imageName: "apple")
         
         googleButton.imageEdgeInsets = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
         facebookButton.imageEdgeInsets = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
-        appleButton.imageEdgeInsets = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+        kokoaButton.imageEdgeInsets = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
         
         googleButton.makeSize()
         googleButton.backgroundColor = .clear
@@ -97,11 +97,11 @@ extension LoginScreenView {
         facebookButton.layer.borderWidth = 0.8
         facebookButton.layer.borderColor = UIColor(hex: "#778899FF")!.cgColor
         
-        appleButton.makeSize()
-        appleButton.backgroundColor = .clear
-        appleButton.layer.cornerRadius = 16
-        appleButton.layer.borderWidth = 0.8
-        appleButton.layer.borderColor = UIColor(hex: "#778899FF")!.cgColor
+        kokoaButton.makeSize()
+        kokoaButton.backgroundColor = .clear
+        kokoaButton.layer.cornerRadius = 16
+        kokoaButton.layer.borderWidth = 0.8
+        kokoaButton.layer.borderColor = UIColor(hex: "#778899FF")!.cgColor
     }
     
     private func customizeTextFields() {
@@ -140,7 +140,7 @@ extension LoginScreenView {
     private func setupStackView() {
         buttonsStack.addArrangedSubview(googleButton)
         buttonsStack.addArrangedSubview(facebookButton)
-        buttonsStack.addArrangedSubview(appleButton)
+        buttonsStack.addArrangedSubview(kokoaButton)
         
         stackView.addArrangedSubview(title)
         stackView.addArrangedSubview(nameField)
@@ -180,6 +180,6 @@ extension LoginScreenView {
     @objc func signUpAction() { signUpHandler?() }
     @objc func googleAction() { googleHandler?() }
     @objc func facebookAction() { facebookHandler?() }
-    @objc func appleAction() { appleHandler?() }
+    @objc func appleAction() { kokoaHandler?() }
 }
 

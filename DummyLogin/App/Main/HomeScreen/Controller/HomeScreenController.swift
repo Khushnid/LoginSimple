@@ -1,5 +1,7 @@
 
 import UIKit
+import GoogleSignIn
+import KakaoSDKUser
 
 class HomeScreenController: GenericController {
     
@@ -23,6 +25,18 @@ extension HomeScreenController {
     
     private func setupTargets() {
         _view.logoutHandler = {
+            
+            // MARK:  signing out from SDK(google, fb, kokoa)
+            GIDSignIn.sharedInstance().signOut()
+            
+            UserApi.shared.logout {(error) in
+                if let error = error {
+                    print(error)
+                }
+                else {
+                    print("logout() success.")
+                }
+            }
             
             UserPreferences.shared.userToken = nil
             UserPreferences.shared.userName = nil

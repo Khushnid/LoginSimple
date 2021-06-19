@@ -2,7 +2,6 @@
 import UIKit
 import Firebase
 import GoogleSignIn
-import FBSDKCoreKit
 import KakaoSDKCommon
 import KakaoSDKAuth
 import KakaoSDKUser
@@ -18,21 +17,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
         GIDSignIn.sharedInstance().clientID = ConstantsAPIKey.GOOGLE_KEY
         
-        ApplicationDelegate.shared.application(
-            application,
-            didFinishLaunchingWithOptions: launchOptions
-        )
-        
         // MARK:  for Kokoa login
         KakaoSDKCommon.initSDK(appKey: ConstantsAPIKey.KOKAOTALK_KEY)
         
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
-        
-        ApplicationDelegate.shared.application(
-            application,
-            didFinishLaunchingWithOptions: launchOptions
-        )
         
         if AuthManager.shared.isAuthenticated() {
             window?.rootViewController = UINavigationController(rootViewController: HomeScreenController())
@@ -46,13 +35,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any]) -> Bool {
         
         let googleDidHandle = GIDSignIn.sharedInstance().handle(url)
-        
-        //        let facebookHandle = ApplicationDelegate.shared.application(
-        //            app,
-        //            open: url,
-        //            sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,
-        //            annotation: options[UIApplication.OpenURLOptionsKey.annotation]
-        //        )
         
         if (AuthApi.isKakaoTalkLoginUrl(url)) {
             return AuthController.handleOpenUrl(url: url)

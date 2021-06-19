@@ -2,7 +2,7 @@
 import UIKit
 import GoogleSignIn
 import FBSDKCoreKit
-import FBSDKLoginKit
+import KakaoSDKUser
 
 class LoginScreenController: GenericController {
     
@@ -12,7 +12,6 @@ class LoginScreenController: GenericController {
         super.viewDidLoad()
         handleClicks()
         setup()
-        setupFacebook()
     }
     
     override func loadView() {
@@ -30,17 +29,20 @@ extension LoginScreenController {
         _view.birthField.delegate = self
     }
     
-    private func setupFacebook() {
-        
-        
-        if let token = AccessToken.current, !token.isExpired {
-            let token = token.tokenString
-            let request = FBSDKLoginKit.GraphRequest(graphPath: "me", parameters: ["fields" : "email, name"], tokenString: token, version: nil, httpMethod: .get)
-            request.start(completionHandler: {connection, result, error in
-                print(result as Any )
-            })
-        } else {
-
+    private func setupKokoa() {
+        UserApi.shared.me() {(user, error) in
+            if let error = error {
+                print(error)
+            }
+            else {
+                self._view.nameField.text = user?.kakaoAccount?.profile?.nickname ?? ""
+                self._view.surnameField.text =  user?.kakaoAccount?.profile?.nickname ?? ""
+                self._view.emailField.text = user?.kakaoAccount?.email ?? ""
+                self._view.phoneField.text = ""
+                self._view.birthField.text = ""
+                
+                _ = user
+            }
         }
     }
     
@@ -51,29 +53,30 @@ extension LoginScreenController {
         
         _view.googleHandler = {
             GIDSignIn.sharedInstance().signIn()
+            self._view.facebookButton.isEnabled = false
+            self._view.kokoaButton.isEnabled = false
+            self._view.googleButton.isEnabled = false
         }
         
         _view.facebookHandler = { [weak self] in
             guard let self = self else { return }
             self.showAlert(for: "Feature be available soon")
-//            let login = LoginManager()
-//            login.logIn(
-//                permissions: ["public_profile"],
-//                from: self,
-//                handler: { result, error in
-//                    if error != nil {
-//                        print("Process error")
-//                    } else if ((result?.isCancelled) != nil) {
-//                        print("Cancelled")
-//                    } else {
-//                        print("Logged in")
-//                    }
-//                })
         }
         
-        _view.appleHandler = { [weak self] in
-            guard let self = self else { return }
-            self.showAlert(for: "Apple SignIn requires IOS 13.0+")
+        _view.kokoaHandler = {
+            UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
+                if let error = error {
+                    self.showAlert(for: error.localizedDescription)
+                }
+                else {
+                    self.showAlert(for: "Logged in with Kokoa")
+                    self.setupKokoa()
+                }
+
+                self._view.facebookButton.isEnabled = false
+                self._view.kokoaButton.isEnabled = false
+                self._view.googleButton.isEnabled = false
+            }
         }
     }
     
@@ -94,7 +97,6 @@ extension LoginScreenController {
     func save(_ data: RegisterData) {
         
         GIDSignIn.sharedInstance().signOut()
-        LoginManager().logOut()
         
         UserPreferences.shared.userName = data.name
         UserPreferences.shared.userPhone = data.phoneNumber

@@ -45,14 +45,6 @@
 	<string></string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>UIAppFonts</key>
-	<array>
-		<string>Golos_Text_Bold</string>
-		<string>Golos_Text_Regular</string>
-		<string>Golos_Text_DemiBold</string>
-		<string>Golos_Text_Medium</string>
-		<string>Golos_Text_Black</string>
-	</array>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -72,5 +64,10 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+    <key>LSApplicationQueriesSchemes</key>
+     <array>
+         <string>kakaokompassauth</string>
+         <string>kakaolink</string>
+     </array>
 </dict>
 </plist>

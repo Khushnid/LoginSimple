@@ -1,16 +1,12 @@
-
-import FBSDKCoreKit
+import KakaoSDKAuth
 
 @available(iOS 13.0, *)
-func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
-    guard let url = URLContexts.first?.url else {
-        return
+class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        if let url = URLContexts.first?.url {
+            if (AuthApi.isKakaoTalkLoginUrl(url)) {
+                _ = AuthController.handleOpenUrl(url: url)
+            }
+        }
     }
-
-    ApplicationDelegate.shared.application(
-        UIApplication.shared,
-        open: url,
-        sourceApplication: nil,
-        annotation: [UIApplication.OpenURLOptionsKey.annotation]
-    )
 }
